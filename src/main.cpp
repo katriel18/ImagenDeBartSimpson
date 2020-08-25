@@ -27,10 +27,29 @@ int N = 7;
 GLuint m_VAO;
 GLuint m_VBO[2];
 
+/*
 GLfloat pcontrol[7][2] = {
 		{-0.1,  0.0}, {-0.1, 0.1}, { 0.1, 0.1},
 		{ 0.1,  0.0}, { 0.1,-0.1}, { 0.0,-0.0},
 		{ 0.0,  0.0}};
+*/
+
+GLfloat pcontrol[6][2] =
+
+{
+		{-0.1, 0.0}, {-0.1, 0.1},
+
+		{ 0.1, 0.1},
+		{ 0.1, 0.0},
+		{ 0.1,-0.1},
+
+
+		{ 0.0,  0.0}
+
+};
+
+
+
 int numPointsBz;
 int nPointsCurveBz;
 
@@ -141,7 +160,7 @@ int main(void) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE); 	// Resizable option.
 
-    GLFWwindow* window = glfwCreateWindow(800, 800, "Imagen De Bart Simpson", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Imagen De Bart Simpson", NULL, NULL);
     glfwMakeContextCurrent(window);
     if (glewInit() != GLEW_OK) {
     	exit(EXIT_FAILURE);
