@@ -23,31 +23,22 @@ GLuint renderingProgram;
 
 using namespace std;
 
-int N = 5;//7;
+int N = 5;				//  <------------------
+
 GLuint m_VAO;
 GLuint m_VBO[2];
 
 
-
-GLfloat pcontrol[5][2] //[7][2] =
+GLfloat pcontrol[5][2]	//  <------------------
 
 {
-		//{-0.1, 0.0},
-
-
-		{-0.1, 0.1},
-		{0.0, 0.1},
-
-		{ 0.1, 0.1},
-
-		{ 0.1, 0.0},
-		{ 0.1,-0.1},
-
-
-		//{ 0.0,  0.0}
+	{ -0.52, 0.8},//punto final*/
+	{ -0.46, 0.4},
+	{ -0.54, 0.0},
+	{ -0.46, -0.4},
+	{ -0.5,-0.8},//punto inicio
 
 };
-
 
 
 int numPointsBz;
@@ -109,6 +100,7 @@ void init (GLFWwindow* window) {
 	vector<float> pBezier = graficaPuntosBezier();
 	numPointsBz = pBezier.size()/2;
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO[0]);
+
 	// Reserva memoria na GPU para um TARGET receber dados
 	// Copia esses dados pra essa área de memoria
 	glBufferData(
@@ -116,10 +108,34 @@ void init (GLFWwindow* window) {
 			pBezier.size()*sizeof(GLfloat),	// tamanho do buffer
 			(void*)&pBezier[0],			// Dados a serem copiados pra GPU
 			GL_STATIC_DRAW);		// Política de acesso aos dados, para otimização
+
+
     // Create a Vertex Buffer Para los puntos de la Curva
     // Vector que guarda los Puntos de la curva de Bezier
-
 	vector<float> pCBezier = graficaCurvaBezier();
+
+	//  <-------- PELO ---------
+
+	pCBezier.push_back(-0.4);
+	pCBezier.push_back(0.7);
+	pCBezier.push_back(-0.3);
+	pCBezier.push_back(0.8);
+	pCBezier.push_back(-0.2);
+	pCBezier.push_back(0.7);
+	pCBezier.push_back(-0.1);
+	pCBezier.push_back(0.8);
+
+	pCBezier.push_back(0.0);
+	pCBezier.push_back(0.7);
+	pCBezier.push_back(0.1);
+	pCBezier.push_back(0.8);
+	pCBezier.push_back(0.2);
+	pCBezier.push_back(0.7);
+	pCBezier.push_back(0.3);
+	pCBezier.push_back(0.8);
+
+	//  <---------------------
+
 	nPointsCurveBz = pCBezier.size()/2;
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO[1]);
 	glBufferData(
@@ -140,15 +156,35 @@ void display(GLFWwindow* window, double currentTime) {
 
     // Draw Control Points
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO[0]);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), 0);
-	glPointSize(5);
+	glVertexAttribPointer(
+			0,
+			2,
+			GL_FLOAT,
+			GL_FALSE,
+			2*sizeof(GLfloat),
+			0
+	);
+	glPointSize(4);
 	glDrawArrays(GL_POINTS, 0, numPointsBz);
+
+
 
 	// Draw Curves Points
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO[1]);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), 0);
+	glVertexAttribPointer(
+			0,
+			2,
+			GL_FLOAT,
+			GL_FALSE,
+			2*sizeof(GLfloat),
+			0
+	);
+	glPointSize(6);
 	glDrawArrays(GL_LINE_STRIP, 0, nPointsCurveBz);
+	//GL_LINE_STRIP,GL_LINES,GL_LINE_LOOP,GL_POINTS,GL_TRIANGLE_FAN(PINTA)
+
 }
+
 
 int main(void) {
     if (!glfwInit()) {
