@@ -108,7 +108,7 @@ GLfloat pcontrol5[5][2]	//  <----- barba2-------
 int numPointsBz;
 int nPointsCurveBz;
 vector<float> tempCBezier;
-int cant1,cant2,cant3;
+int cant1,cant2,cant3,cant4;
 Circulo circulo;
 vector<float> tempCirculo;
 
@@ -190,10 +190,11 @@ void init (GLFWwindow* window) {
 
 
 	//  <-------- PELO ---------
-	pCBezier.push_back(-0.4);
+	pCBezier.push_back(-0.4);//inicio izquierdo
 	pCBezier.push_back(0.7);
 	pCBezier.push_back(-0.3);
 	pCBezier.push_back(0.8);
+
 	pCBezier.push_back(-0.2);
 	pCBezier.push_back(0.7);
 	pCBezier.push_back(-0.1);
@@ -203,13 +204,14 @@ void init (GLFWwindow* window) {
 	pCBezier.push_back(0.7);
 	pCBezier.push_back(0.1);
 	pCBezier.push_back(0.8);
+
 	pCBezier.push_back(0.2);
 	pCBezier.push_back(0.7);
 	pCBezier.push_back(0.3);
 	pCBezier.push_back(0.8);
 
 	pCBezier.push_back(0.4);
-	pCBezier.push_back(0.7);
+	pCBezier.push_back(0.7);//inicio derecho
 	//  <--------------------
 
 	tempCBezier = graficaCurvaBezier(pcontrol2,5);
@@ -237,14 +239,25 @@ void init (GLFWwindow* window) {
 	pCBezier.push_back(-0.8);
 	cant3=pCBezier.size()/2;
 
-	//  <------------ojo 1 derecho
-	tempCirculo=circulo.crearCirculo(0.16,150,0.46,-0.16);
+	//  <------------ojo  derecho
+	tempCirculo=circulo.crearCirculo(0.20,200,0.40,-0.12);
 	pCBezier.insert(pCBezier.end(),tempCirculo.begin(),tempCirculo.end());
 
 
 
-	// <------------ojo 2 izquierdo
-	tempCirculo=circulo.crearCirculo(0.16,150,0.21,-0.16);
+	// <------------ojo  izquierdo
+	tempCirculo=circulo.crearCirculo(0.20,200,0.16,-0.12);
+	pCBezier.insert(pCBezier.end(),tempCirculo.begin(),tempCirculo.end());
+	cant4=pCBezier.size()/2;
+
+	//  <------------ojo pequeño  derecho
+	tempCirculo=circulo.crearCirculo(0.02,100,0.40,-0.12);
+	pCBezier.insert(pCBezier.end(),tempCirculo.begin(),tempCirculo.end());
+
+
+
+	// <------------ojo pequeño  izquierdo
+	tempCirculo=circulo.crearCirculo(0.02,100,0.12,-0.13);
 	pCBezier.insert(pCBezier.end(),tempCirculo.begin(),tempCirculo.end());
 
 
@@ -261,6 +274,10 @@ void init (GLFWwindow* window) {
 
 void display(GLFWwindow* window, double currentTime) {
     glUseProgram(renderingProgram);
+
+    // cambiar color
+    GLfloat colorVariable = glGetUniformLocation(renderingProgram, "colorVariable");
+    GLfloat c=0.0;
 
     // Clear the screen to black
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -311,13 +328,39 @@ void display(GLFWwindow* window, double currentTime) {
 
 
 	//ojo1 derecho
-	glPointSize(2);
-	glDrawArrays(GL_POINTS,cant3,151);
+	c=1.0;
+	glProgramUniform1f(renderingProgram, colorVariable, c);
+	glPointSize(1.5);
+	glDrawArrays(GL_TRIANGLE_FAN,cant3+1,201-1);//+1,-1 elimina el punto extra
+	c=0.0;
+	glProgramUniform1f(renderingProgram, colorVariable, c);
+	glPointSize(1.5);
+	glDrawArrays(GL_POINTS,cant3+1,201-1);//+1,-1 elimina el punto centro
 
-	//ojo2 izquierdo
-	glPointSize(2);//GL_TRIANGLE_FAN
-	glDrawArrays(GL_POINTS,nPointsCurveBz-151,151);
 
+	//ojo2 grande izquierdo
+	c=1.0;
+	glProgramUniform1f(renderingProgram, colorVariable, c);
+	glPointSize(1.5);
+	glDrawArrays(GL_TRIANGLE_FAN,cant3+201,201);
+	c=0.0;
+	glProgramUniform1f(renderingProgram, colorVariable, c);
+	glPointSize(1.5);
+	glDrawArrays(GL_POINTS,cant3+201+1,201-1);//+1,-1 elimina el punto centro
+
+	//ojos pequeños
+	c=0.0;
+	glProgramUniform1f(renderingProgram, colorVariable, c);
+	glPointSize(1.3);
+	glDrawArrays(GL_TRIANGLE_FAN,cant4,101);
+	glDrawArrays(GL_TRIANGLE_FAN,cant4+101,101);
+
+
+
+
+	//verde para todas la lineas
+	c=0.0;
+	glProgramUniform1f(renderingProgram, colorVariable, c);
 }
 
 
