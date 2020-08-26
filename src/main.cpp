@@ -39,7 +39,7 @@ GLuint m_VAO;
 GLuint m_VBO[2];
 
 
-GLfloat pcontrol1[5][2]	//  <-----lado derecho-------
+GLfloat pcontrol1[5][2]	//  <-----lado izquierdo-------
 
 {
 	{ -0.52, 0.8},//punto final
@@ -50,14 +50,40 @@ GLfloat pcontrol1[5][2]	//  <-----lado derecho-------
 
 };
 
+//9 vertices  <----- cabello-------
+
 GLfloat pcontrol2[5][2]	//  <-----lado derecho-------
 
 {
-	{ 0.52, 0.8},//punto final
-	{ 0.46, 0.4},
-	{ 0.54, 0.0},
+	{ 0.5,-0.5},//punto final
 	{ 0.46, -0.4},
-	{ 0.5,-0.8},//punto inicio
+	{ 0.54, 0.0},
+	{ 0.46, 0.4},
+	{ 0.52, 0.8},//punto inicio
+
+};
+
+GLfloat pcontrol3[5][2]	//  <-----barba 1-------
+
+{
+
+	{ -0.2, -0.6},//punto final
+	{ -0.1, -0.69},
+	{ 0.1, -0.69},
+	{ 0.3, -0.69},
+	{ 0.5,-0.6},//punto inicio
+
+};
+
+GLfloat pcontrol4[5][2]	//  <----- barba2-------
+
+{
+
+	{ -0.1, -0.75},//punto final
+	{ -0.05, -0.75},
+	{ 0.1, -0.75},
+	{ 0.05, -0.7},
+	{ 0.1, -0.69},//punto inicio
 
 };
 
@@ -66,6 +92,7 @@ GLfloat pcontrol2[5][2]	//  <-----lado derecho-------
 
 int numPointsBz;
 int nPointsCurveBz;
+int cant1;
 
 /********************/
 vector<float> graficaPuntosBezier(float pcontrol[][2]) {
@@ -118,7 +145,7 @@ void init (GLFWwindow* window) {
     // Create Vertex Array Object
     glGenVertexArrays(1, &m_VAO);
     glBindVertexArray(m_VAO);
-    glGenBuffers(2, m_VBO);
+     glGenBuffers(2, m_VBO);
 
 
     // Create a Vertex Buffer Object and copy the vertex data to it
@@ -135,15 +162,16 @@ void init (GLFWwindow* window) {
 			GL_ARRAY_BUFFER,	// TARGET associado ao nosso buffer
 			pBezier.size()*sizeof(GLfloat),	// tamanho do buffer
 			(void*)&pBezier[0],			// Dados a serem copiados pra GPU
-			GL_STATIC_DRAW);		// Política de acesso aos dados, para otimização
+			GL_STATIC_DRAW				// Política de acesso aos dados, para otimização
+	);
 
 
     // Create a Vertex Buffer Para los puntos de la Curva
     // Vector que guarda los Puntos de la curva de Bezier
 	vector<float> pCBezier = graficaCurvaBezier(pcontrol1);
+	vector<float> temp;
 
 	//  <-------- PELO ---------
-/*
 	pCBezier.push_back(-0.4);
 	pCBezier.push_back(0.7);
 	pCBezier.push_back(-0.3);
@@ -160,9 +188,26 @@ void init (GLFWwindow* window) {
 	pCBezier.push_back(0.2);
 	pCBezier.push_back(0.7);
 	pCBezier.push_back(0.3);
-	pCBezier.push_back(0.8);*/
+	pCBezier.push_back(0.8);
 
+	pCBezier.push_back(0.4);
+	pCBezier.push_back(0.7);
+	//  <--------------------
+
+	temp = graficaCurvaBezier(pcontrol2);
+	pCBezier.insert(pCBezier.end(),temp.begin(),temp.end());
 	//  <---------------------
+	temp = graficaCurvaBezier(pcontrol3);
+	pCBezier.insert(pCBezier.end(),temp.begin(),temp.end());
+	//  <---------------------
+	cant1=pCBezier.size()/2;
+	temp = graficaCurvaBezier(pcontrol4);
+	pCBezier.insert(pCBezier.end(),temp.begin(),temp.end());
+
+	//  <-------- PELO ---------
+	pCBezier.push_back(-0.1);
+	pCBezier.push_back(-0.8);
+
 
 	nPointsCurveBz = pCBezier.size()/2;
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO[1]);
@@ -170,7 +215,9 @@ void init (GLFWwindow* window) {
 			GL_ARRAY_BUFFER,
 			pCBezier.size()*sizeof(GLfloat),
 			(void*)&pCBezier[0],
-			GL_STATIC_DRAW);
+			GL_STATIC_DRAW
+	);
+
 }
 
 void display(GLFWwindow* window, double currentTime) {
@@ -182,6 +229,7 @@ void display(GLFWwindow* window, double currentTime) {
 
     glEnableVertexAttribArray(0);	// Habilita este atributo Layout 0
 
+/*
     // Draw Control Points
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO[0]);
 	glVertexAttribPointer(
@@ -194,8 +242,7 @@ void display(GLFWwindow* window, double currentTime) {
 	);
 	glPointSize(4);
 	glDrawArrays(GL_POINTS, 0, numPointsBz);
-
-
+*/
 
 	// Draw Curves Points
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO[1]);
@@ -207,9 +254,17 @@ void display(GLFWwindow* window, double currentTime) {
 			2*sizeof(GLfloat),
 			0
 	);
+
+
 	glPointSize(6);
-	glDrawArrays(GL_LINE_STRIP, 0, nPointsCurveBz);
+	//glDrawArrays(GL_LINE_STRIP, 0, nPointsCurveBz);
 	//GL_LINE_STRIP,GL_LINES,GL_LINE_LOOP,GL_POINTS,GL_TRIANGLE_FAN(PINTA)
+
+	glDrawArrays(GL_LINE_STRIP,0,cant1);
+
+	glDrawArrays(GL_LINE_STRIP,cant1,nPointsCurveBz-cant1);
+
+
 
 }
 
