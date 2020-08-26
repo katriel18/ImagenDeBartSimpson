@@ -26,15 +26,15 @@ GLuint renderingProgram;
 using namespace std;
 
 //metodos
-vector<float> graficaPuntosBezier(float pcontrol[][2]);
+vector<float> graficaPuntosBezier(float pcontrol[][2],int N);
 float factorial(int n);
 float CoefNewton(int n, int k);
-float CurvaBezier(float u, int axis,float pcontrol[][2]);
-vector<float> graficaCurvaBezier(float pcontrol[][2]);
+float CurvaBezier(float u, int axis,float pcontrol[][2],int N);
+vector<float> graficaCurvaBezier(float pcontrol[][2],int N);
 void init (GLFWwindow* window) ;
 void display(GLFWwindow* window, double currentTime);
 
-int N = 5;				//  <------------------
+//int N = 5;				//  <------------------
 
 GLuint m_VAO;
 GLuint m_VBO[2];
@@ -113,7 +113,7 @@ Circulo circulo;
 vector<float> tempCirculo;
 
 /********************/
-vector<float> graficaPuntosBezier(float pcontrol[][2]) {
+vector<float> graficaPuntosBezier(float pcontrol[][2],int N) {
   vector<float> temp;
   for (int i = 0; i < N; i++) {
     temp.push_back(pcontrol[i][0]);
@@ -136,7 +136,7 @@ float CoefNewton(int n, int k) {
 }
 
 /********************/
-float CurvaBezier(float u, int axis,float pcontrol[][2]) {
+float CurvaBezier(float u, int axis,float pcontrol[][2],int N) {
 	float suma = 0.0;
 	for (int i = 0; i < N; i++) {
 		suma += pcontrol[i][axis] * CoefNewton(N - 1, i) * pow(u, N - 1 - i)
@@ -146,11 +146,11 @@ float CurvaBezier(float u, int axis,float pcontrol[][2]) {
 }
 
 /********************/
-vector<float> graficaCurvaBezier(/*void,*/float pcontrol[][2]) {
+vector<float> graficaCurvaBezier(/*void,*/float pcontrol[][2],int N) {
 	vector<float> temp;
 	for (float u = 0.0; u <= 1; u += 0.01) {
-		temp.push_back(CurvaBezier(u, 0,pcontrol));
-		temp.push_back(CurvaBezier(u, 1,pcontrol));
+		temp.push_back(CurvaBezier(u, 0,pcontrol, N));
+		temp.push_back(CurvaBezier(u, 1,pcontrol, N));
 	}
 	return temp;
 }
@@ -168,7 +168,7 @@ void init (GLFWwindow* window) {
 
     // Create a Vertex Buffer Object and copy the vertex data to it
     // Vector que guarda los Puntos de Bezier
-	vector<float> pBezier = graficaPuntosBezier(pcontrol1);
+	vector<float> pBezier = graficaPuntosBezier(pcontrol1,5);
 
 
 	numPointsBz = pBezier.size()/2;
@@ -186,7 +186,7 @@ void init (GLFWwindow* window) {
 
     // Create a Vertex Buffer Para los puntos de la Curva
     // Vector que guarda los Puntos de la curva de Bezier
-	vector<float> pCBezier = graficaCurvaBezier(pcontrol1);
+	vector<float> pCBezier = graficaCurvaBezier(pcontrol1,5);
 
 
 	//  <-------- PELO ---------
@@ -212,24 +212,24 @@ void init (GLFWwindow* window) {
 	pCBezier.push_back(0.7);
 	//  <--------------------
 
-	tempCBezier = graficaCurvaBezier(pcontrol2);
+	tempCBezier = graficaCurvaBezier(pcontrol2,5);
 	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 
 	//  <-------------barba1
 
-	tempCBezier = graficaCurvaBezier(pcontrol3);
+	tempCBezier = graficaCurvaBezier(pcontrol3,5);
 	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 	cant1=pCBezier.size()/2;
 
 	//  <--------SONRISA-------
 
-	tempCBezier = graficaCurvaBezier(pcontrol4);
+	tempCBezier = graficaCurvaBezier(pcontrol4,5);
 	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 	cant2=pCBezier.size()/2;
 
 	//  <------------barba2
 
-	tempCBezier = graficaCurvaBezier(pcontrol5);
+	tempCBezier = graficaCurvaBezier(pcontrol5,5);
 	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 
 	//  <-------- CUELLO ---------
