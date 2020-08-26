@@ -75,7 +75,21 @@ GLfloat pcontrol3[5][2]	//  <-----barba 1-------
 
 };
 
-GLfloat pcontrol4[5][2]	//  <----- barba2-------
+GLfloat pcontrol4[5][2]	//  <----- SONRISA-------
+
+{
+
+	{-0.15, -0.56},//punto final
+	{ -0.20, -0.58},
+
+	{ -0.22, -0.6},
+
+	{ -0.20, -0.62},
+	{ -0.18, -0.66},//punto inicio
+
+};
+
+GLfloat pcontrol5[5][2]	//  <----- barba2-------
 
 {
 
@@ -83,7 +97,7 @@ GLfloat pcontrol4[5][2]	//  <----- barba2-------
 	{ -0.05, -0.75},
 	{ 0.1, -0.75},
 	{ 0.05, -0.7},
-	{ 0.1, -0.69},//punto inicio
+	{ 0.08, -0.68},//punto inicio
 
 };
 
@@ -92,7 +106,7 @@ GLfloat pcontrol4[5][2]	//  <----- barba2-------
 
 int numPointsBz;
 int nPointsCurveBz;
-int cant1;
+int cant1,cant2;
 
 /********************/
 vector<float> graficaPuntosBezier(float pcontrol[][2]) {
@@ -196,15 +210,27 @@ void init (GLFWwindow* window) {
 
 	temp = graficaCurvaBezier(pcontrol2);
 	pCBezier.insert(pCBezier.end(),temp.begin(),temp.end());
-	//  <---------------------
+
+	//  <-------------barba1
+
 	temp = graficaCurvaBezier(pcontrol3);
 	pCBezier.insert(pCBezier.end(),temp.begin(),temp.end());
-	//  <---------------------
 	cant1=pCBezier.size()/2;
+
+	//  <--------SONRISA-------
+
 	temp = graficaCurvaBezier(pcontrol4);
 	pCBezier.insert(pCBezier.end(),temp.begin(),temp.end());
+	cant2=pCBezier.size()/2;
 
-	//  <-------- PELO ---------
+	//  <------------barba2
+
+	temp = graficaCurvaBezier(pcontrol5);
+	pCBezier.insert(pCBezier.end(),temp.begin(),temp.end());
+
+
+
+	//  <-------- CUELLO ---------
 	pCBezier.push_back(-0.1);
 	pCBezier.push_back(-0.8);
 
@@ -262,7 +288,9 @@ void display(GLFWwindow* window, double currentTime) {
 
 	glDrawArrays(GL_LINE_STRIP,0,cant1);
 
-	glDrawArrays(GL_LINE_STRIP,cant1,nPointsCurveBz-cant1);
+	glDrawArrays(GL_LINE_STRIP,cant1,cant2-cant1);
+
+	glDrawArrays(GL_LINE_STRIP,cant2,nPointsCurveBz-cant2);
 
 
 
