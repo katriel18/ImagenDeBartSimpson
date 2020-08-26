@@ -19,12 +19,13 @@
 #include <fstream>
 #include "Utils.h"
 
+#include "Circulo.h"
+
 GLuint renderingProgram;
 
 using namespace std;
 
 //metodos
-//void nuevaCurva(int n);
 vector<float> graficaPuntosBezier(float pcontrol[][2]);
 float factorial(int n);
 float CoefNewton(int n, int k);
@@ -106,7 +107,10 @@ GLfloat pcontrol5[5][2]	//  <----- barba2-------
 
 int numPointsBz;
 int nPointsCurveBz;
-int cant1,cant2;
+vector<float> tempCBezier;
+int cant1,cant2,cant3;
+Circulo circulo;
+vector<float> tempCirculo;
 
 /********************/
 vector<float> graficaPuntosBezier(float pcontrol[][2]) {
@@ -183,7 +187,7 @@ void init (GLFWwindow* window) {
     // Create a Vertex Buffer Para los puntos de la Curva
     // Vector que guarda los Puntos de la curva de Bezier
 	vector<float> pCBezier = graficaCurvaBezier(pcontrol1);
-	vector<float> temp;
+
 
 	//  <-------- PELO ---------
 	pCBezier.push_back(-0.4);
@@ -208,31 +212,40 @@ void init (GLFWwindow* window) {
 	pCBezier.push_back(0.7);
 	//  <--------------------
 
-	temp = graficaCurvaBezier(pcontrol2);
-	pCBezier.insert(pCBezier.end(),temp.begin(),temp.end());
+	tempCBezier = graficaCurvaBezier(pcontrol2);
+	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 
 	//  <-------------barba1
 
-	temp = graficaCurvaBezier(pcontrol3);
-	pCBezier.insert(pCBezier.end(),temp.begin(),temp.end());
+	tempCBezier = graficaCurvaBezier(pcontrol3);
+	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 	cant1=pCBezier.size()/2;
 
 	//  <--------SONRISA-------
 
-	temp = graficaCurvaBezier(pcontrol4);
-	pCBezier.insert(pCBezier.end(),temp.begin(),temp.end());
+	tempCBezier = graficaCurvaBezier(pcontrol4);
+	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 	cant2=pCBezier.size()/2;
 
 	//  <------------barba2
 
-	temp = graficaCurvaBezier(pcontrol5);
-	pCBezier.insert(pCBezier.end(),temp.begin(),temp.end());
-
-
+	tempCBezier = graficaCurvaBezier(pcontrol5);
+	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 
 	//  <-------- CUELLO ---------
 	pCBezier.push_back(-0.1);
 	pCBezier.push_back(-0.8);
+	cant3=pCBezier.size()/2;
+
+	//  <------------ojo 1 derecho
+	tempCirculo=circulo.crearCirculo(0.16,150,0.46,-0.16);
+	pCBezier.insert(pCBezier.end(),tempCirculo.begin(),tempCirculo.end());
+
+
+
+	// <------------ojo 2 izquierdo
+	tempCirculo=circulo.crearCirculo(0.16,150,0.21,-0.16);
+	pCBezier.insert(pCBezier.end(),tempCirculo.begin(),tempCirculo.end());
 
 
 	nPointsCurveBz = pCBezier.size()/2;
@@ -286,13 +299,24 @@ void display(GLFWwindow* window, double currentTime) {
 	//glDrawArrays(GL_LINE_STRIP, 0, nPointsCurveBz);
 	//GL_LINE_STRIP,GL_LINES,GL_LINE_LOOP,GL_POINTS,GL_TRIANGLE_FAN(PINTA)
 
+
+	//lados , cabello ,barba1
 	glDrawArrays(GL_LINE_STRIP,0,cant1);
 
+	//sonrisa
 	glDrawArrays(GL_LINE_STRIP,cant1,cant2-cant1);
 
-	glDrawArrays(GL_LINE_STRIP,cant2,nPointsCurveBz-cant2);
+	//barba2 y cuello
+	glDrawArrays(GL_LINE_STRIP,cant2,cant3-cant2);
 
 
+	//ojo1 derecho
+	glPointSize(2);
+	glDrawArrays(GL_POINTS,cant3,151);
+
+	//ojo2 izquierdo
+	glPointSize(2);//GL_TRIANGLE_FAN
+	glDrawArrays(GL_POINTS,nPointsCurveBz-151,151);
 
 }
 
@@ -307,7 +331,7 @@ int main(void) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE); 	// Resizable option.
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Imagen De Bart Simpson", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(750, 600, "Imagen De Bart Simpson", NULL, NULL);
     glfwMakeContextCurrent(window);
     if (glewInit() != GLEW_OK) {
     	exit(EXIT_FAILURE);
