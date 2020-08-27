@@ -383,6 +383,8 @@ void display(GLFWwindow* window, double currentTime) {
     GLfloat c=0.0;
 
     // Clear the screen to black
+    float m = ((int) currentTime % 2 == 0) ? 0.5f : 1.0f;
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -418,33 +420,32 @@ void display(GLFWwindow* window, double currentTime) {
 	//glDrawArrays(GL_LINE_STRIP, 0, nPointsCurveBz);
 	//GL_LINE_STRIP,GL_LINES,GL_LINE_LOOP,GL_POINTS,GL_TRIANGLE_FAN(PINTA)
 
+
 	//lados , cabello ,barba1
 	glDrawArrays(GL_LINE_STRIP,0,cant1);
-
 	//sonrisa
 	glDrawArrays(GL_LINE_STRIP,cant1,cant2-cant1);
-
 	//barba2 y cuello
 	glDrawArrays(GL_LINE_STRIP,cant2,cant3-cant2);
 
 
 	//ojo1 derecho
-	c=1.0;
+	c=0.0;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glPointSize(1.5);
 	glDrawArrays(GL_TRIANGLE_FAN,cant3+1,201-1);//+1,-1 elimina el punto extra
-	c=0.0;
+	c=m;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glPointSize(1.5);
 	glDrawArrays(GL_POINTS,cant3+1,201-1);//+1,-1 elimina el punto centro
 
 
 	//ojo2 grande izquierdo
-	c=1.0;
+	c=0.0;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glPointSize(1.5);
 	glDrawArrays(GL_TRIANGLE_FAN,cant3+201,201);
-	c=0.0;
+	c=m;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glPointSize(1.5);
 	glDrawArrays(GL_POINTS,cant3+201+1,201-1);//+1,-1 elimina el punto centro
@@ -454,18 +455,18 @@ void display(GLFWwindow* window, double currentTime) {
 	glDrawArrays(GL_TRIANGLE_FAN,cant4+101,101);
 
 	//nariz
-	c=1.0;
+	c=0.0;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glDrawArrays(GL_TRIANGLE_FAN,cant5,cant6-cant5);
-	c=0.0;
+	c=m;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glDrawArrays(GL_LINE_STRIP,cant5,cant6-cant5);
 
 	//oreja
-	c=1.0;
+	c=0.0;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glDrawArrays(GL_TRIANGLE_FAN,cant6,cant7-cant6);
-	c=0.0;
+	c=m;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glDrawArrays(GL_LINE_STRIP,cant6,cant7-cant6);
 
@@ -477,7 +478,7 @@ void display(GLFWwindow* window, double currentTime) {
 	glDrawArrays(GL_LINE_STRIP,cant8,nPointsCurveBz-cant8);
 
 	//verde para todas la lineas
-	c=0.0;
+	c=m;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 }
 
