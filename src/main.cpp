@@ -43,10 +43,10 @@ GLuint m_VBO[2];
 GLfloat pcontrol1[5][2]	//  <-----lado izquierdo-------
 
 {
-	{ -0.52, 0.8},//punto final
+	{ -0.54, 0.8},//punto final
 	{ -0.46, 0.4},
 	{ -0.54, 0.0},
-	{ -0.46, -0.4},
+	{ -0.44, -0.4},
 	{ -0.5,-0.8},//punto inicio
 
 };
@@ -58,8 +58,8 @@ GLfloat pcontrol2[5][2]	//  <-----lado derecho-------
 {
 	{ 0.5,-0.5},//punto final
 	{ 0.46, -0.4},
-	{ 0.54, 0.0},
-	{ 0.46, 0.4},
+	{ 0.52, 0.0},
+	{ 0.42, 0.4},
 	{ 0.52, 0.8},//punto inicio
 
 };
@@ -134,11 +134,38 @@ GLfloat pcontrol7[5][2]	//  <----- oreja-------
 
 };
 
+GLfloat pcontrol8[3][2]	//  <----- oreja interna 1-------
+
+{
+	{ -0.48,-0.39},
+	{ -0.53,-0.37},
+	{ -0.51,-0.33},//---------
+
+};
+GLfloat pcontrol9[3][2]	//  <----- oreja interna 2-------
+
+{
+	{-0.53,-0.35},
+	{ -0.51,-0.32},
+	{-0.47,-0.34},
+
+};
+
+
+GLfloat pcontrol10[3][2]	//  <----- frente-------
+
+{
+	{-0.53,-0.35},
+	{ -0.51,-0.32},
+	{-0.47,-0.34},
+
+};
+
 
 int numPointsBz;
 int nPointsCurveBz;
 vector<float> tempCBezier;
-int cant1,cant2,cant3,cant4,cant5,cant6;
+int cant1,cant2,cant3,cant4,cant5,cant6,cant7,cant8;
 Circulo circulo;
 vector<float> tempCirculo;
 
@@ -224,22 +251,24 @@ void init (GLFWwindow* window) {
 	pCBezier.push_back(0.7);
 	pCBezier.push_back(-0.3);
 	pCBezier.push_back(0.8);
-
 	pCBezier.push_back(-0.2);
 	pCBezier.push_back(0.7);
+
+
+
+
 	pCBezier.push_back(-0.1);
 	pCBezier.push_back(0.8);
-
 	pCBezier.push_back(0.0);
 	pCBezier.push_back(0.7);
 	pCBezier.push_back(0.1);
 	pCBezier.push_back(0.8);
 
+
 	pCBezier.push_back(0.2);
 	pCBezier.push_back(0.7);
 	pCBezier.push_back(0.3);
 	pCBezier.push_back(0.8);
-
 	pCBezier.push_back(0.4);
 	pCBezier.push_back(0.7);//inicio derecho
 	//  <--------------------
@@ -269,27 +298,26 @@ void init (GLFWwindow* window) {
 	pCBezier.push_back(-0.8);
 	cant3=pCBezier.size()/2;
 
+
 	//  <------------ojo  derecho
 	tempCirculo=circulo.crearCirculo(0.20,200,0.40,-0.12);
 	pCBezier.insert(pCBezier.end(),tempCirculo.begin(),tempCirculo.end());
-
-
 
 	// <------------ojo  izquierdo
 	tempCirculo=circulo.crearCirculo(0.20,200,0.16,-0.12);
 	pCBezier.insert(pCBezier.end(),tempCirculo.begin(),tempCirculo.end());
 	cant4=pCBezier.size()/2;
 
+
 	//  <------------ojo pequeño  derecho
-	tempCirculo=circulo.crearCirculo(0.02,100,0.40,-0.12);
+	tempCirculo=circulo.crearCirculo(0.02,100,0.40,-0.10);
 	pCBezier.insert(pCBezier.end(),tempCirculo.begin(),tempCirculo.end());
-
-
 
 	// <------------ojo pequeño  izquierdo
-	tempCirculo=circulo.crearCirculo(0.02,100,0.12,-0.13);
+	tempCirculo=circulo.crearCirculo(0.02,100,0.10,-0.11);
 	pCBezier.insert(pCBezier.end(),tempCirculo.begin(),tempCirculo.end());
 	cant5=pCBezier.size()/2;
+
 
 	//  <--------nariz-------
 	tempCBezier = graficaCurvaBezier(pcontrol6,7);
@@ -299,7 +327,16 @@ void init (GLFWwindow* window) {
 	//  <-------- oreja -------
 	tempCBezier = graficaCurvaBezier(pcontrol7,5);
 	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
+	cant7=pCBezier.size()/2;
 
+	//  <-------- oreja intena -------
+	tempCBezier = graficaCurvaBezier(pcontrol8,3);
+	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
+	cant8=pCBezier.size()/2;
+
+	//  <-------- oreja intena 2-------
+	tempCBezier = graficaCurvaBezier(pcontrol9,3);
+	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 
 
 	nPointsCurveBz = pCBezier.size()/2;
@@ -404,11 +441,17 @@ void display(GLFWwindow* window, double currentTime) {
 	//oreja
 	c=1.0;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
-	glDrawArrays(GL_TRIANGLE_FAN,cant6,nPointsCurveBz-cant6);
+	glDrawArrays(GL_TRIANGLE_FAN,cant6,cant7-cant6);
 	c=0.0;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
-	glDrawArrays(GL_LINE_STRIP,cant6,nPointsCurveBz-cant6);
+	glDrawArrays(GL_LINE_STRIP,cant6,cant7-cant6);
 
+	//oreja interna 1
+	glProgramUniform1f(renderingProgram, colorVariable, c);
+	glDrawArrays(GL_LINE_STRIP,cant7,cant8-cant7);
+	//oreja interna 2
+	glProgramUniform1f(renderingProgram, colorVariable, c);
+	glDrawArrays(GL_LINE_STRIP,cant8,nPointsCurveBz-cant8);
 
 
 
