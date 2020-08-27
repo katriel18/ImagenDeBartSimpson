@@ -53,13 +53,18 @@ GLfloat pcontrol1[5][2]	//  <-----lado izquierdo-------
 
 //9 vertices  <----- cabello-------
 
-GLfloat pcontrol2[5][2]	//  <-----lado derecho-------
+GLfloat pcontrol2[7][2]	//  <-----lado derecho-------
 
 {
-	{ 0.5,-0.5},//punto final
+
+	{ 0.52,-0.61},//punto final //labio
+	{ 0.48,-0.5},
+
+	{ 0.5,-0.5},
 	{ 0.46, -0.4},
 	{ 0.52, 0.0},
 	{ 0.42, 0.4},
+
 	{ 0.52, 0.8},//punto inicio
 
 };
@@ -71,8 +76,9 @@ GLfloat pcontrol3[5][2]	//  <-----barba 1-------
 	{ -0.2, -0.6},//punto final
 	{ -0.1, -0.69},
 	{ 0.1, -0.69},
-	{ 0.3, -0.69},
-	{ 0.5,-0.6},//punto inicio
+
+	{ 0.4, -0.71},
+	{ 0.52,-0.62},//punto inicio
 
 };
 
@@ -106,11 +112,13 @@ GLfloat pcontrol6[7][2]	//  <----- nariz-------
 
 {
 
-	{ 0.36,-0.43 },//punto final
-	{ 0.46 ,-0.41 },
+	{ 0.36,-0.42 },//punto final
+	{ 0.46 ,-0.40 },
 
 	{ 0.60,-0.45},
-	{ 0.53,-0.33},
+
+	{ 0.48,-0.33},//punta
+
 	{ 0.60,-0.19},
 
 	{ 0.40 ,-0.30},
@@ -247,33 +255,50 @@ void init (GLFWwindow* window) {
 
 
 	//  <-------- PELO ---------
-	pCBezier.push_back(-0.4);//inicio izquierdo
-	pCBezier.push_back(0.7);
-	pCBezier.push_back(-0.3);
-	pCBezier.push_back(0.8);
-	pCBezier.push_back(-0.2);
-	pCBezier.push_back(0.7);
+		pCBezier.push_back(-0.45);//inicio izquierdo
+		pCBezier.push_back(0.72);
+		pCBezier.push_back(-0.40);
+		pCBezier.push_back(0.82);
+		pCBezier.push_back(-0.35);
+		pCBezier.push_back(0.72);
+		pCBezier.push_back(-0.30);
+		pCBezier.push_back(0.82);
+		pCBezier.push_back(-0.25);
+		pCBezier.push_back(0.72);
 
+		pCBezier.push_back(-0.20);
+		pCBezier.push_back(0.84);
+		pCBezier.push_back(-0.15);
+		pCBezier.push_back(0.74);
+		pCBezier.push_back(-0.10);
+		pCBezier.push_back(0.84);
+		pCBezier.push_back(-0.05);
+		pCBezier.push_back(0.74);
+		pCBezier.push_back(0.00);
+		pCBezier.push_back(0.84);
+		pCBezier.push_back(0.05);
+		pCBezier.push_back(0.74);
+		pCBezier.push_back(0.10);
+		pCBezier.push_back(0.84);
+		pCBezier.push_back(0.15);
+		pCBezier.push_back(0.74);
+		pCBezier.push_back(0.20);
+		pCBezier.push_back(0.84);
 
+		pCBezier.push_back(0.25);
+		pCBezier.push_back(0.72);
+		pCBezier.push_back(0.30);
+		pCBezier.push_back(0.82);
+		pCBezier.push_back(0.35);
+		pCBezier.push_back(0.72);
+		pCBezier.push_back(0.40);
+		pCBezier.push_back(0.82);
+		pCBezier.push_back(0.45);
+		pCBezier.push_back(0.72);//incio del pelo derecho
 
+	//  <--------------------lado derecho
 
-	pCBezier.push_back(-0.1);
-	pCBezier.push_back(0.8);
-	pCBezier.push_back(0.0);
-	pCBezier.push_back(0.7);
-	pCBezier.push_back(0.1);
-	pCBezier.push_back(0.8);
-
-
-	pCBezier.push_back(0.2);
-	pCBezier.push_back(0.7);
-	pCBezier.push_back(0.3);
-	pCBezier.push_back(0.8);
-	pCBezier.push_back(0.4);
-	pCBezier.push_back(0.7);//inicio derecho
-	//  <--------------------
-
-	tempCBezier = graficaCurvaBezier(pcontrol2,5);
+	tempCBezier = graficaCurvaBezier(pcontrol2,7);
 	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 
 	//  <-------------barba1
@@ -390,10 +415,8 @@ void display(GLFWwindow* window, double currentTime) {
 	);
 
 
-	glPointSize(6);
 	//glDrawArrays(GL_LINE_STRIP, 0, nPointsCurveBz);
 	//GL_LINE_STRIP,GL_LINES,GL_LINE_LOOP,GL_POINTS,GL_TRIANGLE_FAN(PINTA)
-
 
 	//lados , cabello ,barba1
 	glDrawArrays(GL_LINE_STRIP,0,cant1);
@@ -452,8 +475,6 @@ void display(GLFWwindow* window, double currentTime) {
 	//oreja interna 2
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glDrawArrays(GL_LINE_STRIP,cant8,nPointsCurveBz-cant8);
-
-
 
 	//verde para todas la lineas
 	c=0.0;
