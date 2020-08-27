@@ -383,7 +383,7 @@ void display(GLFWwindow* window, double currentTime) {
     GLfloat c=0.0;
 
     // Clear the screen to black
-    float m = ((int) currentTime % 2 == 0) ? 0.5f : 1.0f;
+    float m = ((int) currentTime % 2 == 0) ? 0.2f : 1.0f;
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -437,8 +437,7 @@ void display(GLFWwindow* window, double currentTime) {
 	c=m;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glPointSize(1.5);
-	glDrawArrays(GL_POINTS,cant3+1,201-1);//+1,-1 elimina el punto centro
-
+	glDrawArrays(GL_LINE_LOOP,cant3+1,201-1);//+1,-1 elimina el punto centro
 
 	//ojo2 grande izquierdo
 	c=0.0;
@@ -448,7 +447,8 @@ void display(GLFWwindow* window, double currentTime) {
 	c=m;
 	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glPointSize(1.5);
-	glDrawArrays(GL_POINTS,cant3+201+1,201-1);//+1,-1 elimina el punto centro
+	glDrawArrays(GL_LINE_LOOP,cant3+201+1,201-1);//+1,-1 elimina el punto centro
+
 
 	//ojos pequeños
 	glDrawArrays(GL_TRIANGLE_FAN,cant4,101);
