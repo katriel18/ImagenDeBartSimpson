@@ -172,6 +172,8 @@ GLfloat pcontrol10[3][2]	//  <----- frente-------
 
 int numPointsBz;
 int nPointsCurveBz;
+vector<float> pCBezier;
+
 vector<float> tempCBezier;
 int cant1,cant2,cant3,cant4,cant5,cant6,cant7,cant8;
 Circulo circulo;
@@ -251,8 +253,14 @@ void init (GLFWwindow* window) {
 
     // Create a Vertex Buffer Para los puntos de la Curva
     // Vector que guarda los Puntos de la curva de Bezier
-	vector<float> pCBezier = graficaCurvaBezier(pcontrol1,5);
 
+	//PUNTO CENTRO PARA PINTADO
+	pCBezier.push_back(-0.22);
+	pCBezier.push_back(-0.6);
+
+	//  <-------- LADO IZQUIERDO ---------
+	 tempCBezier = graficaCurvaBezier(pcontrol1,5);
+	 pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 
 	//  <-------- PELO ---------
 		pCBezier.push_back(-0.45);//inicio izquierdo
@@ -380,7 +388,8 @@ void display(GLFWwindow* window, double currentTime) {
 
     // cambiar color
     GLfloat colorVariable = glGetUniformLocation(renderingProgram, "colorVariable");
-    GLfloat c=0.0;
+
+    GLfloat colorVariable2 = glGetUniformLocation(renderingProgram, "colorVariable2");
 
     // Clear the screen to black
     //float m = ((int) currentTime % 2 == 0) ? 0.5f : 1.0f;
@@ -417,68 +426,64 @@ void display(GLFWwindow* window, double currentTime) {
 	);
 
 
-	//glDrawArrays(GL_LINE_STRIP, 0, nPointsCurveBz);
+	glProgramUniform1f(renderingProgram, colorVariable, 1.0f);
+	glProgramUniform1f(renderingProgram, colorVariable2, 1.0f);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, cant4);//cant3
 	//GL_LINE_STRIP,GL_LINES,GL_LINE_LOOP,GL_POINTS,GL_TRIANGLE_FAN(PINTA)
 
 
+	glProgramUniform1f(renderingProgram, colorVariable, 0.0);
+	glProgramUniform1f(renderingProgram, colorVariable2, 0.0);
+
 	//lados , cabello ,barba1
-	glDrawArrays(GL_LINE_STRIP,0,cant1);
+	glDrawArrays(GL_LINE_STRIP,1,cant1-1);
+
 	//sonrisa
 	glDrawArrays(GL_LINE_STRIP,cant1,cant2-cant1);
+
+
 	//barba2 y cuello
 	glDrawArrays(GL_LINE_STRIP,cant2,cant3-cant2);
 
-
 	//ojo1 derecho
-	c=1.0;
-	glProgramUniform1f(renderingProgram, colorVariable, c);
-	glPointSize(1.5);
+	glProgramUniform1f(renderingProgram, colorVariable, 1.0f);
 	glDrawArrays(GL_TRIANGLE_FAN,cant3+1,201-1);//+1,-1 elimina el punto extra
-	c=0.0;
-	glProgramUniform1f(renderingProgram, colorVariable, c);
-	glPointSize(1.5);
-	glDrawArrays(GL_LINE_LOOP,cant3+1,201-1);//+1,-1 elimina el punto centro
-	//ojo2 grande izquierdo
-	c=1.0;
-	glProgramUniform1f(renderingProgram, colorVariable, c);
-	glPointSize(1.5);
-	glDrawArrays(GL_TRIANGLE_FAN,cant3+201,201);
-	c=0.0;
-	glProgramUniform1f(renderingProgram, colorVariable, c);
-	glPointSize(1.5);
-	glDrawArrays(GL_LINE_LOOP,cant3+201+1,201-1);//+1,-1 elimina el punto centro
 
+	glProgramUniform1f(renderingProgram, colorVariable, 0.0f);
+	glDrawArrays(GL_LINE_LOOP,cant3+1,201-1);//+1,-1 elimina el punto centro
+
+	//ojo2 grande izquierdo
+	glProgramUniform1f(renderingProgram, colorVariable, 1.0f);
+	glDrawArrays(GL_TRIANGLE_FAN,cant3+201,201);
+
+	glProgramUniform1f(renderingProgram, colorVariable, 0.0f);
+	glDrawArrays(GL_LINE_LOOP,cant3+201+1,201-1);//+1,-1 elimina el punto centro
 
 	//ojos pequeños
 	glDrawArrays(GL_TRIANGLE_FAN,cant4,101);
 	glDrawArrays(GL_TRIANGLE_FAN,cant4+101,101);
 
 	//nariz
-	c=1.0;
-	glProgramUniform1f(renderingProgram, colorVariable, c);
+	glProgramUniform1f(renderingProgram, colorVariable, 1.0f);
 	glDrawArrays(GL_TRIANGLE_FAN,cant5,cant6-cant5);
-	c=0.0;
-	glProgramUniform1f(renderingProgram, colorVariable, c);
+
+	glProgramUniform1f(renderingProgram, colorVariable, 0.0f);
 	glDrawArrays(GL_LINE_STRIP,cant5,cant6-cant5);
 
 	//oreja
-	c=1.0;
-	glProgramUniform1f(renderingProgram, colorVariable, c);
+	glProgramUniform1f(renderingProgram, colorVariable, 1.0);
 	glDrawArrays(GL_TRIANGLE_FAN,cant6,cant7-cant6);
-	c=0.0;
-	glProgramUniform1f(renderingProgram, colorVariable, c);
+
+	glProgramUniform1f(renderingProgram, colorVariable, 0.0);
 	glDrawArrays(GL_LINE_STRIP,cant6,cant7-cant6);
 
 	//oreja interna 1
-	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glDrawArrays(GL_LINE_STRIP,cant7,cant8-cant7);
+
 	//oreja interna 2
-	glProgramUniform1f(renderingProgram, colorVariable, c);
 	glDrawArrays(GL_LINE_STRIP,cant8,nPointsCurveBz-cant8);
 
-	//verde para todas la lineas
-	c=0.0;
-	glProgramUniform1f(renderingProgram, colorVariable, c);
+
 }
 
 
