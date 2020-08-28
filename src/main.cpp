@@ -40,7 +40,7 @@ GLuint m_VAO;
 GLuint m_VBO[2];
 
 
-GLfloat pcontrol1[5][2]	//  <-----lado izquierdo-------
+GLfloat *pcontrol1[5][2]	//  <-----lado izquierdo-------
 
 {
 	{ -0.54, 0.8},//punto final
@@ -53,7 +53,7 @@ GLfloat pcontrol1[5][2]	//  <-----lado izquierdo-------
 
 //9 vertices  <----- cabello-------
 
-GLfloat pcontrol2[7][2]	//  <-----lado derecho-------
+GLfloat *pcontrol2[7][2]	//  <-----lado derecho-------
 
 {
 
@@ -69,7 +69,7 @@ GLfloat pcontrol2[7][2]	//  <-----lado derecho-------
 
 };
 
-GLfloat pcontrol3[5][2]	//  <-----barba 1-------
+GLfloat *pcontrol3[5][2]	//  <-----barba 1-------
 
 {
 
@@ -82,7 +82,7 @@ GLfloat pcontrol3[5][2]	//  <-----barba 1-------
 
 };
 
-GLfloat pcontrol4[5][2]	//  <----- SONRISA-------
+GLfloat *pcontrol4[5][2]	//  <----- SONRISA-------
 
 {
 
@@ -96,7 +96,7 @@ GLfloat pcontrol4[5][2]	//  <----- SONRISA-------
 
 };
 
-GLfloat pcontrol5[5][2]	//  <----- barba2-------
+GLfloat *pcontrol5[5][2]	//  <----- barba2-------
 
 {
 
@@ -108,7 +108,7 @@ GLfloat pcontrol5[5][2]	//  <----- barba2-------
 
 };
 
-GLfloat pcontrol6[7][2]	//  <----- nariz-------
+GLfloat *pcontrol6[7][2]	//  <----- nariz-------
 
 {
 
@@ -126,7 +126,7 @@ GLfloat pcontrol6[7][2]	//  <----- nariz-------
 
 };
 
-GLfloat pcontrol7[5][2]	//  <----- oreja-------
+GLfloat *pcontrol7[5][2]	//  <----- oreja-------
 
 {
 
@@ -142,7 +142,7 @@ GLfloat pcontrol7[5][2]	//  <----- oreja-------
 
 };
 
-GLfloat pcontrol8[3][2]	//  <----- oreja interna 1-------
+GLfloat *pcontrol8[3][2]	//  <----- oreja interna 1-------
 
 {
 	{ -0.48,-0.39},
@@ -150,7 +150,7 @@ GLfloat pcontrol8[3][2]	//  <----- oreja interna 1-------
 	{ -0.51,-0.33},//---------
 
 };
-GLfloat pcontrol9[3][2]	//  <----- oreja interna 2-------
+GLfloat *pcontrol9[3][2]	//  <----- oreja interna 2-------
 
 {
 	{-0.53,-0.35},
@@ -160,7 +160,7 @@ GLfloat pcontrol9[3][2]	//  <----- oreja interna 2-------
 };
 
 
-GLfloat pcontrol10[3][2]	//  <----- frente-------
+GLfloat *pcontrol10[3][2]	//  <----- frente-------
 
 {
 	{-0.53,-0.35},
