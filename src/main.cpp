@@ -372,6 +372,10 @@ void init (GLFWwindow* window) {
 	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 
 
+
+
+
+
 	nPointsCurveBz = pCBezier.size()/2;
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO[1]);
 	glBufferData(
@@ -425,22 +429,20 @@ void display(GLFWwindow* window, double currentTime) {
 			0
 	);
 
-
-	glProgramUniform1f(renderingProgram, colorVariable, 1.0f);
-	glProgramUniform1f(renderingProgram, colorVariable2, 1.0f);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, cant4);//cant3
 	//GL_LINE_STRIP,GL_LINES,GL_LINE_LOOP,GL_POINTS,GL_TRIANGLE_FAN(PINTA)
 
-
-	glProgramUniform1f(renderingProgram, colorVariable, 0.0);
-	glProgramUniform1f(renderingProgram, colorVariable2, 0.0);
+	//pintar de amarillo la base completa
+	glProgramUniform1f(renderingProgram, colorVariable, 1.0f);
+	glProgramUniform1f(renderingProgram, colorVariable2, 1.0f);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, cant3);//cant3
 
 	//lados , cabello ,barba1
+	glProgramUniform1f(renderingProgram, colorVariable, 0.0);
+	glProgramUniform1f(renderingProgram, colorVariable2, 0.0);
 	glDrawArrays(GL_LINE_STRIP,1,cant1-1);
 
 	//sonrisa
 	glDrawArrays(GL_LINE_STRIP,cant1,cant2-cant1);
-
 
 	//barba2 y cuello
 	glDrawArrays(GL_LINE_STRIP,cant2,cant3-cant2);
@@ -465,15 +467,19 @@ void display(GLFWwindow* window, double currentTime) {
 
 	//nariz
 	glProgramUniform1f(renderingProgram, colorVariable, 1.0f);
-	glDrawArrays(GL_TRIANGLE_FAN,cant5,cant6-cant5);
+	glProgramUniform1f(renderingProgram, colorVariable2, 1.0f);
+	glDrawArrays(GL_TRIANGLE_FAN, cant5,cant6-cant5);
 
+	glProgramUniform1f(renderingProgram, colorVariable2, 0.0f);
 	glProgramUniform1f(renderingProgram, colorVariable, 0.0f);
 	glDrawArrays(GL_LINE_STRIP,cant5,cant6-cant5);
 
 	//oreja
-	glProgramUniform1f(renderingProgram, colorVariable, 1.0);
-	glDrawArrays(GL_TRIANGLE_FAN,cant6,cant7-cant6);
+	glProgramUniform1f(renderingProgram, colorVariable, 1.0f);
+	glProgramUniform1f(renderingProgram, colorVariable2, 1.0f);
+	glDrawArrays(GL_TRIANGLE_FAN, cant6,cant7-cant6);
 
+	glProgramUniform1f(renderingProgram, colorVariable2, 0.0f);
 	glProgramUniform1f(renderingProgram, colorVariable, 0.0);
 	glDrawArrays(GL_LINE_STRIP,cant6,cant7-cant6);
 
