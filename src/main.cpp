@@ -371,11 +371,16 @@ void init (GLFWwindow* window) {
 	tempCBezier = graficaCurvaBezier(pcontrol9,3);
 	pCBezier.insert(pCBezier.end(),tempCBezier.begin(),tempCBezier.end());
 
+	//  <-------- triangulo de pintado de cuello -------
 
+	pCBezier.push_back(-0.1);
+	pCBezier.push_back(-0.8);
+	pCBezier.push_back(-0.5);
+	pCBezier.push_back(-0.8);
+	pCBezier.push_back(-0.22);
+	pCBezier.push_back(-0.6);
 
-
-
-
+	//llenado de los vertices
 	nPointsCurveBz = pCBezier.size()/2;
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO[1]);
 	glBufferData(
@@ -434,7 +439,10 @@ void display(GLFWwindow* window, double currentTime) {
 	//pintar de amarillo la base completa
 	glProgramUniform1f(renderingProgram, colorVariable, 1.0f);
 	glProgramUniform1f(renderingProgram, colorVariable2, 1.0f);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, cant3);//cant3
+	glDrawArrays(GL_TRIANGLE_FAN, 0, cant3);
+	//pintar de amarillo triangulo del cuello faltante
+	glDrawArrays(GL_TRIANGLES, nPointsCurveBz-3, 3);
+
 
 	//lados , cabello ,barba1
 	glProgramUniform1f(renderingProgram, colorVariable, 0.0);
@@ -487,7 +495,11 @@ void display(GLFWwindow* window, double currentTime) {
 	glDrawArrays(GL_LINE_STRIP,cant7,cant8-cant7);
 
 	//oreja interna 2
-	glDrawArrays(GL_LINE_STRIP,cant8,nPointsCurveBz-cant8);
+	glDrawArrays(GL_LINE_STRIP,cant8,nPointsCurveBz-cant8-3);
+
+
+
+
 
 
 }
